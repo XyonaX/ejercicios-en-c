@@ -29,7 +29,7 @@ int elemCima(tTvPila);
 void visualizarPila(tTvPila);
 void menu();
 void agregarCaja();
-
+void consulta();
 /* Declaraci�n de variables */
 tTvPila pila;
 
@@ -111,7 +111,7 @@ void visualizarPila(tTvPila pTv){
     {
         for (int i = 0; i <= pTv.tope; i++)
         {
-            printf("%dpulgadas | ", pTv.pilaTv[i]);
+            printf("\n%d pulgadas |", pTv.pilaTv[i]);
         }
         
     }else
@@ -121,18 +121,48 @@ void visualizarPila(tTvPila pTv){
     
 }
 
+void consulta( ){
+    //una consulta que a partir del ingreso de un valor x de pulgadas retorne la cantidad de televisores con 
+    // más de x pulgadas que se encuentran apilados
+    int pulgadas,i;
+    if (!pilaVacia(pila))
+    {
+        printf("*** Consulta la cantidad de tv con mas pulgadas *** \n");
+        printf("\nIngrese un valor para consulta : ");
+        fflush(stdin);
+        scanf("%d",&pulgadas);
+
+        for (int i = 0 ; i <= pila.tope; i++)
+        {
+            if (pulgadas < pila.pilaTv[i])
+            {
+                // printf("\nLas tv son  :");
+                printf("\n%d pulgadas |", pila.pilaTv[i]); 
+            }
+        }
+    }else
+    {
+        printf("\nNo existe tv de mayor pulgada\n");
+    }
+    
+}   
+  
+
+
+
 void menu (){
     int opcion;
     do
     {
-        printf("\n*** Opciones disponibles ***\n");	
+        printf("\n\n*** Opciones disponibles ***\n");	
         printf("1- Inicializar la pila de TV\n");
         printf("2- Ingresar una caja\n");
         printf("3- Sacar una caja\n");
         printf("4- Mostrar cantidad de elementos\n");	
-        printf("5- Mostrar elemento de la cima\n");	
+        printf("5- Mostrar elemento de la cima\n");
+        printf("6- Consultar mayores pulgadas\n");
         printf("0- Salir\n");        
-        printf("\nOpcion: \n");
+        printf("\nOpcion: ");
         fflush(stdin);
         scanf("%i",&opcion);
         switch (opcion)
@@ -150,9 +180,11 @@ void menu (){
             visualizarPila(pila); 
             break;
         case 5:
-            elemCima(pila); 
+            printf("\nEl elemento en la cima es: %d\n", elemCima( pila ) );
             break;
-        
+        case 6:
+            consulta(); 
+            break;
         default:
             printf("\nHasta la Proxima");
             break;
