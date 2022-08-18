@@ -92,7 +92,7 @@ void desapilarTv(){
         strcpy(pila.televisores[elemEliminado].marca, " ");
         pila.tope--;
         printf("\nCaja retirada!\n");
-        printf("\ntelevisor del tope: %d'' %s\n", elemCima(pila).pulgadas, elemCima(pila).marca);
+        printf("\ntelevisor en el tope: %d'' %s\n", elemCima(pila).pulgadas, elemCima(pila).marca);
     }
     else{
         printf("\nPila vacia!\n");
@@ -108,8 +108,10 @@ tTelevisor elemCima(tPilaTelevisores pPila){
 void visualizarPila(tPilaTelevisores pPila){
     int i;
     if(!pilaVacia(pila)){
+        printf("\n\t\t\t\t\t|\tPila     \t|\n");
+        printf("\t\t\t\t\t|-----------------------|\n");
         for(i = 0; i <= pila.tope; i++){
-            printf("\t\t\t\t\t|%d'' | %s\n", pila.televisores[i].pulgadas, pila.televisores[i].marca,(i == pila.tope) ? "<--Tope" : " ");
+            printf("\t\t\t\t\t|%d'' | %s\t\t|\n", pila.televisores[i].pulgadas, pila.televisores[i].marca,(i == pila.tope) ? "<--Tope" : " ");
                         
         }
     }
@@ -121,7 +123,7 @@ void visualizarPila(tPilaTelevisores pPila){
 
 void agregarCaja(){
     tTelevisor caja;
-    int pulgadas=0, opcion;
+    int opcion;
     
     do
     {
@@ -130,6 +132,7 @@ void agregarCaja(){
         if (caja.pulgadas > elemCima(pila).pulgadas && !pilaVacia(pila))
         {
             printf("\nLa caja no puede ser agregada, porque es mayor a la caja que esta en el tope\n");
+            system("pause");
         }
         else
         {
