@@ -122,18 +122,29 @@ void visualizarPila(tPilaTelevisores pPila){
 void agregarCaja(){
     tTelevisor caja;
     int pulgadas=0, opcion;
+    
     do
     {
-        printf("\nIngrese la pulgada de la caja: ");
+        printf("\nIngrese la cantidad de pulgadas de la caja: ");
         scanf("%d", &caja.pulgadas);
-        printf("\nIngrese la marca de la caja: ");
-        fflush(stdin);
-        gets(caja.marca);
-        apilarTv(caja);
-        pulgadas = caja.pulgadas;
-        printf("\nDesea agregar otra caja?\n1. Si\n2. No\n");
-        scanf("%d", &opcion);
-    }while(opcion == 1);
+        if (caja.pulgadas > elemCima(pila).pulgadas && !pilaVacia(pila))
+        {
+            printf("\nLa caja no puede ser agregada, porque es mayor a la caja que esta en el tope\n");
+        }
+        else
+        {
+            printf("\nIngrese la marca de la caja: ");
+            fflush(stdin);
+            scanf("%s", caja.marca);
+            apilarTv(caja);
+            printf("\nDesea agregar otra caja?\n1. Si\n2. No\n");
+            scanf("%d", &opcion);
+        }
+    
+        
+    } while (opcion == 1);
+    
+    
     
 }
 
@@ -208,4 +219,3 @@ void menu(){
         system("cls");
     } while (opcion != 0);
 }
-
