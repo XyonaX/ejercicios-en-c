@@ -16,32 +16,38 @@ tope*/
 
 /* Declaracion de tipos de datos personalizados*/
 
-typedef int tPilasTv[MAX];
-typedef char tPilasMarca[MAX];
+typedef char tString[30];
 
 typedef struct 
 {
-    tPilasTv pilaTv;
-    tPilasMarca pilaMarca;
+    int pulgadas;
+    tString marca;
+}tTelevisor;
+
+typedef struct 
+{
+    tTelevisor televisores[MAX];
     int tope;
 
-}tPilaTv;
+}tPilaTelevisores;
+
+
 
 /* Declaracion de prototipos*/
 
 void inicializarPila();
-bool pilaVacia(tPilaTv);
-bool pilaLlena(tPilaTv);
-void apilarTv(int, char);
+bool pilaVacia(tPilaTelevisores);
+bool pilaLlena(tPilaTelevisores);
+void apilarTv(tTelevisor);
 void desapilarTv();
-int elemCima(tPilaTv);
-void visualizarPila(tPilaTv);
+tTelevisor elemCima(tPilaTelevisores);
+void visualizarPila(tPilaTelevisores);
 void menu();
 void agregarCaja();
 void consulta();
-char marcaCima(tPilaTv);
+char marcaCima(tPilaTelevisores);
 /* Declaraci�n de variables */
-tPilaTv pila;
+tPilaTelevisores pila;
 
 
 /* Bloque principal */
@@ -58,18 +64,20 @@ void inicializarPila(){
     printf("\nPila inicializada!\n");
 }
 
-bool pilaVacia(tPilaTv pPila){
+bool pilaVacia(tPilaTelevisores pPila){
     return (pPila.tope == -1);
 }
 
-bool pilaLlena(tPilaTv pPila){
+bool pilaLlena(tPilaTelevisores pPila){
     return (pPila.tope == MAX - 1);
 }
 
-void apilarTv(int pPulgadas, char pMarca){
+void apilarTv(tTelevisor pTelevisor){
     if(!pilaLlena(pila)){
         pila.tope++;
-        pila.pilaTv[pila.tope] = pPulgadas;
+        pila.televisores[pila.tope] = pTelevisor;
+        pila.televisores[pila.tope].pulgadas = pTelevisor.pulgadas;
+        strcpy(pila.televisores[pila.tope].marca, pTelevisor.marca);
         printf("\nCaja agregada!\n");
     }
     else{
@@ -79,13 +87,12 @@ void apilarTv(int pPulgadas, char pMarca){
 
 void desapilarTv(){
     int elemEliminado;
-    char marcaEliminado;
     if(!pilaVacia(pila)){
-        elemEliminado = elemCima(pila);
-        pila.pilaTv[pila.tope] = 0;
+        pila.televisores[elemEliminado].pulgadas = 0;
+        strcpy(pila.televisores[elemEliminado].marca, " ");
         pila.tope--;
         printf("\nCaja retirada!\n");
-        printf("\ntelevisor del tope: %d'' \n", elemCima(pila));
+        printf("\ntelevisor del tope: %d'' %s\n", elemCima(pila).pulgadas, elemCima(pila).marca);
     }
     else{
         printf("\nPila vacia!\n");
@@ -93,20 +100,17 @@ void desapilarTv(){
 
 }
 
-int elemCima(tPilaTv pPila){
-    return pPila.pilaTv[pPila.tope];
-    
+tTelevisor elemCima(tPilaTelevisores pPila){
+    return pPila.televisores[pPila.tope];
 }
 
-char marcaCima(tPilaTv pPila){
-    return pPila.pilaMarca[pPila.tope];
-}
 
-void visualizarPila(tPilaTv pPila){
+void visualizarPila(tPilaTelevisores pPila){
     int i;
     if(!pilaVacia(pila)){
         for(i = 0; i <= pila.tope; i++){
-            printf("\t\t\t\t\t|%d''  | %s\n", pila.pilaTv[i], (i == pila.tope) ? "<--Tope" : " ");
+            printf("\t\t\t\t\t|%d'' | %s\n", pila.televisores[i].pulgadas, pila.televisores[i].marca,(i == pila.tope) ? "<--Tope" : " ");
+                        
         }
     }
     else{
@@ -116,24 +120,20 @@ void visualizarPila(tPilaTv pPila){
 
 
 void agregarCaja(){
-    int pulgadas, opcion, aux = 0;
-    char marca[20];
-        
+    tTelevisor caja;
+    int pulgadas=0, opcion;
     do
     {
-        printf("\nIngrese la cantidad de pulgadas: ");
+        printf("\nIngrese la pulgada de la caja: ");
+        scanf("%d", &caja.pulgadas);
+        printf("\nIngrese la marca de la caja: ");
         fflush(stdin);
-        scanf("%d", &pulgadas);
-        printf("\nIngrese la marca: ");
-        fflush(stdin);
-        gets(marca);
-        fflush(stdin);
-        apilarTv(pulgadas, marca);
-        aux = pulgadas;
+        gets(caja.marca);
+        apilarTv(caja);
+        pulgadas = caja.pulgadas;
         printf("\nDesea agregar otra caja?\n1. Si\n2. No\n");
-        fflush(stdin);
-        scanf("%d", &opcion);   
-    }while(opcion != 2);    
+        scanf("%d", &opcion);
+    }while(opcion == 1);
     
 }
 
@@ -143,7 +143,7 @@ void consulta(){
     fflush(stdin);
     scanf("%d", &pulgadas);
     for(i = 0; i <= pila.tope; i++){
-        if(pila.pilaTv[i] > pulgadas){
+        if(pila.televisores[i].pulgadas > pulgadas){
             contador++;
         }
     }
